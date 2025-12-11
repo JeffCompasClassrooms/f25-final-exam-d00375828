@@ -1,0 +1,49 @@
+name: Test Suites
+
+on:
+  workflow_dispatch: {}  # manual trigger, like the orchestrator example
+
+jobs:
+  # --- Job 1: Brute ---
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-describe pytest-spec pytest-mock
+
+      - name: Run unit tests for Brute
+        run: |
+          pytest --spec test_brute.py
+
+  # --- Job 2: christmas list ---
+  system-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies (system tests)
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-describe pytest-spec
+
+      - name: Run system tests for christmas list
+        run: |
+          pytest --spec test_christmas_list.py
